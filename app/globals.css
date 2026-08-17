@@ -1,26 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+/* ─── Tokens de marca ─────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-verde-principal: #016241;
+  --color-verde-oscuro: #284339;
+  --color-fondo: #F4F3EA;
+  --color-acento: #DFF9BA;
+  --color-texto: #1a1a18;
+  --color-texto-suave: #5a5a50;
+  --color-borde: #d8d6c8;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-verde: #016241;
+  --color-verde-dark: #284339;
+  --color-crema: #F4F3EA;
+  --color-acento: #DFF9BA;
+  --color-neutral-900: #1a1a18;
+  --color-neutral-500: #5a5a50;
+  --color-neutral-200: #d8d6c8;
+  --font-sans: 'Inter', system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Reset y base ────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: 'Inter', system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+/* ─── Tipografía base ─────────────────────────────────────────── */
+h1, h2, h3, h4, h5 {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--color-verde-oscuro);
+}
+
+h1 { font-size: clamp(2.25rem, 5vw, 4rem); }
+h2 { font-size: clamp(1.75rem, 3.5vw, 2.75rem); }
+h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
+
+p {
+  color: var(--color-texto-suave);
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* ─── Scrollbar ───────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-fondo); }
+::-webkit-scrollbar-thumb { background: var(--color-verde-principal); border-radius: 3px; }
+
+/* ─── Utilidades personalizadas ──────────────────────────────── */
+.section-padding {
+  padding-block: clamp(4rem, 8vw, 7rem);
+  padding-inline: clamp(1.25rem, 5vw, 2rem);
+}
+
+.container-max {
+  max-width: 1280px;
+  margin-inline: auto;
+  width: 100%;
+  padding-inline: clamp(1rem, 4vw, 2rem);
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-verde-principal);
+}
+
+/* ─── Animaciones ────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseWhatsapp {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.08); }
 }
