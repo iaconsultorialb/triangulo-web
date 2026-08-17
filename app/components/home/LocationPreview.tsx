@@ -33,27 +33,25 @@ export default function LocationPreview() {
       >
         <div className="container-max">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            {/* Texto */}
             <div>
-              <p className="text-[#DFF9BA] text-xs font-semibold tracking-[0.2em] uppercase mb-3">
-                Centro Comercial · Lanzamiento 2027
+              <p className="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-[#DFF9BA]">
+                Centro Comercial
               </p>
-              <h2 className="text-white mb-4">
+              <h2 className="mb-5 text-balance text-white">
                 Un pueblo suburbano caminable
               </h2>
-              <p className="text-white/70 leading-relaxed mb-6">
+              <p className="mb-7 max-w-xl text-base leading-8 text-white/82">
                 El corazón urbano del masterplan. Un polo de uso mixto con
                 arquitectura inspirada en antiguas estaciones de tren inglesas,
                 donde gastronomía, servicios, trabajo y comercio conviven a
                 escala humana.
               </p>
 
-              {/* Rubros */}
               <div className="flex flex-wrap gap-2 mb-8">
                 {rubros.map(({ icon: Icon, label }) => (
                   <div
                     key={label}
-                    className="flex items-center gap-2 bg-white/10 px-3 py-2 text-xs text-white/80"
+                    className="flex items-center gap-2 rounded-[6px] bg-white/10 px-3 py-2 text-xs font-medium text-white"
                   >
                     <Icon size={13} className="text-[#DFF9BA]" />
                     {label}
@@ -63,19 +61,18 @@ export default function LocationPreview() {
 
               <Button
                 id="comercial-cta-whatsapp"
-                variant="secondary"
+                variant="primary"
                 href={waUrl}
                 external
-                className="border-white text-white hover:bg-white/10"
+                className="bg-[#DFF9BA] !text-[#173529] hover:bg-white"
                 size="md"
               >
                 Consultar oportunidades comerciales
               </Button>
             </div>
 
-            {/* Stats + imagen */}
             <div className="flex flex-col gap-4">
-              <div className="relative aspect-[4/3] overflow-hidden">
+              <div className="relative aspect-[4/3] overflow-hidden rounded-[8px]">
                 <Image
                   src="/assets/triangulo/centro-comercial-plaza.jpg"
                   alt="Plaza del Centro Comercial de El Triángulo"
@@ -91,7 +88,7 @@ export default function LocationPreview() {
                       size={14}
                       className="text-[#DFF9BA] mt-0.5 shrink-0"
                     />
-                    <span className="text-xs text-white/70">{h}</span>
+                    <span className="text-xs leading-6 text-white/78">{h}</span>
                   </li>
                 ))}
               </ul>
@@ -109,12 +106,12 @@ export default function LocationPreview() {
         <div className="container-max">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
             <div>
-              <p className="eyebrow mb-3">Ubicación</p>
-              <h2 className="text-[#284339] mb-4">
+              <p className="section-kicker mb-3">Ubicación</p>
+              <h2 className="mb-5 text-balance text-[#284339]">
                 Entre Luján y Pilar,
                 <br />a ~50 min de CABA
               </h2>
-              <p className="text-[#5a5a50] leading-relaxed mb-6">
+              <p className="mb-7 max-w-xl text-base leading-8 text-[#5a5a50]">
                 Intersección de Ruta Provincial 192 y Avenida Juan de Dios
                 Filiberto, Open Door, Partido de Luján. Un corredor de
                 crecimiento con acceso rápido y naturaleza real.
@@ -128,7 +125,7 @@ export default function LocationPreview() {
                   ["Entre", "Luján y Pilar"],
                 ].map(([label, value]) => (
                   <li key={label} className="flex gap-3 border-b border-[#d8d6c8] pb-3">
-                    <span className="text-xs font-semibold text-[#016241] w-28 shrink-0">
+                    <span className="w-32 shrink-0 text-xs font-bold uppercase tracking-[0.08em] text-[#016241]">
                       {label}
                     </span>
                     <span className="text-sm text-[#284339]">{value}</span>
@@ -148,7 +145,7 @@ export default function LocationPreview() {
             </div>
 
             {/* Mapa embebido */}
-            <div className="w-full aspect-[4/3] overflow-hidden bg-[#d8d6c8]">
+            <div className="w-full overflow-hidden rounded-[8px] bg-[#d8d6c8] shadow-[0_18px_48px_-36px_rgba(40,67,57,0.55)] aspect-[4/3]">
               <iframe
                 id="mapa-proyecto"
                 src="https://www.google.com/maps/d/embed?mid=1O0UkxCXQmd-2pfNEJdqG4mRnbKQJSNc&ehbc=2E312F"

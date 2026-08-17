@@ -32,24 +32,26 @@ export default function KeyFacts() {
   return (
     <section
       id="key-facts"
-      className="bg-[#284339] py-10 md:py-12"
+      className="bg-[#284339] py-7 md:py-8"
       aria-label="Datos clave del proyecto"
     >
       <div className="container-max">
-        <ul className="grid grid-cols-2 lg:grid-cols-4 gap-0 divide-x divide-white/10">
+        <ul className="grid grid-cols-2 gap-px overflow-hidden rounded-[8px] bg-white/12 lg:grid-cols-4">
           {facts.map((fact, i) => {
             const Icon = fact.icon;
             return (
               <li
                 key={i}
-                className="flex flex-col items-center text-center px-4 md:px-8 py-4 first:pl-0 last:pr-0"
+                className="bg-[#284339] px-4 py-5 md:px-6"
               >
-                <Icon size={20} className="text-[#DFF9BA] mb-3 shrink-0" />
-                <p className="text-xl md:text-2xl font-bold text-white leading-tight">
+                <div className="mb-4 flex h-8 w-8 items-center justify-center rounded-[6px] bg-[#DFF9BA]/12">
+                  <Icon size={18} className="shrink-0 text-[#DFF9BA]" />
+                </div>
+                <p className="text-2xl font-bold leading-tight text-white">
                   {fact.value}
                 </p>
-                <p className="text-xs text-white/60 mt-0.5">{fact.label}</p>
-                <p className="text-[11px] text-white/40 mt-1 hidden md:block">{fact.sub}</p>
+                <p className="mt-1 text-sm font-medium text-white/76">{fact.label}</p>
+                <p className="mt-1 hidden text-xs text-white/56 md:block">{fact.sub}</p>
               </li>
             );
           })}

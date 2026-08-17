@@ -39,7 +39,6 @@ const segments = [
 export default function FinalCTA() {
   const [selected, setSelected] = useState<string | null>(null);
   const [name, setName] = useState("");
-  const [sent, setSent] = useState(false);
 
   const activeSegment = segments.find((s) => s.id === selected);
   const waMsg = activeSegment
@@ -55,31 +54,30 @@ export default function FinalCTA() {
     >
       <div className="container-max">
         <div className="max-w-3xl mx-auto text-center mb-12">
-          <p className="text-[#DFF9BA] text-xs font-semibold tracking-[0.2em] uppercase mb-4">
+          <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-[#DFF9BA]">
             Empezá hoy
           </p>
-          <h2 className="text-white mb-4">
+          <h2 className="mb-5 text-balance text-white">
             Elegí cómo querés
             <br />ser parte de El Triángulo
           </h2>
-          <p className="text-white/70 text-lg">
+          <p className="text-lg leading-8 text-white/82">
             Contactanos por el canal que prefieras. Sin compromiso, sin demoras.
           </p>
         </div>
 
-        <div className="max-w-2xl mx-auto">
-          {/* Selector de segmento */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-8">
+        <div className="mx-auto max-w-3xl">
+          <div className="mb-4 grid grid-cols-2 gap-2 md:grid-cols-4">
             {segments.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 id={`final-cta-${id}`}
                 onClick={() => setSelected(id === selected ? null : id)}
                 aria-pressed={selected === id}
-                className={`flex flex-col items-center gap-2 p-4 text-xs font-semibold transition-all duration-200 border ${
+                className={`flex min-h-[86px] flex-col items-center justify-center gap-2 rounded-[8px] border text-xs font-bold transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white ${
                   selected === id
-                    ? "bg-white text-[#016241] border-white"
-                    : "bg-white/10 text-white/80 border-white/20 hover:bg-white/20"
+                    ? "bg-white text-[#016241] border-white shadow-md"
+                    : "bg-white/15 text-white border-white/30 hover:bg-white/25 hover:border-white/60"
                 }`}
               >
                 <Icon size={18} />
@@ -88,16 +86,15 @@ export default function FinalCTA() {
             ))}
           </div>
 
-          {/* Mini formulario + CTA */}
-          <div className="bg-white/10 p-6 md:p-8">
-            <div className="flex flex-col md:flex-row gap-3 mb-4">
+          <div className="rounded-[8px] border border-white/24 bg-white/12 p-4 md:p-5">
+            <div className="mb-4 flex flex-col gap-3 md:flex-row">
               <input
                 id="final-cta-name"
                 type="text"
                 placeholder="Tu nombre (opcional)"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="flex-1 bg-white/15 border border-white/20 text-white placeholder-white/40 px-4 py-3 text-sm focus:outline-none focus:border-[#DFF9BA] transition-colors"
+                className="min-h-[50px] flex-1 rounded-[6px] border border-white/36 bg-white/18 px-4 py-3 text-sm text-white placeholder-white/62 transition-colors focus:border-white focus:bg-white/24 focus:outline-none"
                 aria-label="Nombre"
               />
               <Button
@@ -106,19 +103,19 @@ export default function FinalCTA() {
                 href={waUrl}
                 external
                 size="md"
-                className="flex items-center gap-2 whitespace-nowrap"
+                className="flex items-center gap-2 whitespace-nowrap bg-[#DFF9BA] !text-[#173529] hover:bg-white"
               >
                 <Send size={14} />
                 {activeSegment ? activeSegment.cta : "Consultar ahora"}
               </Button>
             </div>
 
-            <p className="text-xs text-white/50 text-center">
+            <p className="text-center text-xs leading-6 text-white/74">
               Al hacer click serás redirigido a WhatsApp con un mensaje
               prearmado. También podés escribirnos a{" "}
               <a
                 href="mailto:ventas@eltriangulodeopendoor.com"
-                className="text-[#DFF9BA] hover:underline"
+                className="font-semibold text-[#DFF9BA] hover:underline"
               >
                 ventas@eltriangulodeopendoor.com
               </a>

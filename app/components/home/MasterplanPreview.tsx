@@ -1,15 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { MASTERPLAN_STEPS } from "@/data/masterplan";
 import Button from "../ui/Button";
 import { buildWhatsAppUrl } from "@/lib/whatsapp";
-import { ChevronRight } from "lucide-react";
+import { ArrowDown, ChevronRight } from "lucide-react";
+import { motion, useMotionValueEvent, useScroll } from "framer-motion";
 
 // SVG del masterplan triangular con zonas coloreadas
 // En la versión final se reemplaza por el SVG real del brochure vectorizado
-function MasterplanSVG({ activeId }: { activeId: string }) {
+function MasterplanSVG({ activeIds }: { activeIds: string[] }) {
   const zones = [
     {
       id: "zona-lotes",
@@ -75,10 +76,7 @@ function MasterplanSVG({ activeId }: { activeId: string }) {
 
       {/* Zonas */}
       {zones.map((zone) => {
-        const isActive =
-          activeId === zone.id ||
-          activeId === "overview" ||
-          activeId === "cta";
+        const isActive = activeIds.includes(zone.id);
         return (
           <path
             key={zone.id}
@@ -86,8 +84,9 @@ function MasterplanSVG({ activeId }: { activeId: string }) {
             d={zone.path}
             fill={isActive ? zone.activeColor : zone.baseColor}
             stroke="#F4F3EA"
-            strokeWidth="2"
+            strokeWidth={isActive ? "4" : "2"}
             className="transition-all duration-500"
+            opacity={isActive ? 1 : 0.34}
             aria-label={zone.label}
           />
         );
@@ -118,43 +117,63 @@ function MasterplanSVG({ activeId }: { activeId: string }) {
 }
 
 export default function MasterplanPreview() {
+  const sectionRef = useRef<HTMLElement | null>(null);
   const [activeStep, setActiveStep] = useState(0);
   const step = MASTERPLAN_STEPS[activeStep];
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+
+  useMotionValueEvent(scrollYProgress, "change", (latest) => {
+    const next = Math.min(
+      MASTERPLAN_STEPS.length - 1,
+      Math.max(0, Math.floor(latest * MASTERPLAN_STEPS.length))
+    );
+    setActiveStep(next);
+  });
 
   return (
     <section
+      ref={sectionRef}
       id="masterplan-preview"
-      className="section-padding bg-[#F4F3EA]"
+      className="relative bg-[#173529] text-white lg:min-h-[520vh]"
       aria-label="Masterplan interactivo"
     >
-      <div className="container-max">
-        {/* Header de sección */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-4">
+      <div className="container-max py-16 lg:sticky lg:top-[76px] lg:flex lg:h-[calc(100vh-76px)] lg:items-center lg:py-0">
+        <div className="grid w-full gap-8 lg:grid-cols-[1.02fr_0.78fr] lg:items-center">
           <div>
-            <p className="eyebrow mb-3">Masterplan</p>
-            <h2 className="text-[#284339]">Explorá el proyecto</h2>
-          </div>
-          <Link
-            id="masterplan-ver-completo"
-            href="/masterplan"
-            className="flex items-center gap-1 text-sm text-[#016241] font-semibold hover:gap-2 transition-all duration-200"
-          >
-            Ver masterplan completo <ChevronRight size={16} />
-          </Link>
-        </div>
+            <div className="mb-7 flex flex-col justify-between gap-4 md:flex-row md:items-end">
+              <div>
+                <p className="mb-3 text-xs font-bold uppercase tracking-[0.16em] text-[#DFF9BA]">
+                  Masterplan interactivo
+                </p>
+                <h2 className="max-w-2xl text-balance text-[clamp(2.2rem,4.8vw,4.75rem)] leading-[1.02] text-white">
+                  Explorá el proyecto por capas
+                </h2>
+              </div>
+              <Link
+                id="masterplan-ver-completo"
+                href="/masterplan"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#DFF9BA] transition-all duration-200 hover:gap-3"
+              >
+                Ver plano completo <ChevronRight size={16} />
+              </Link>
+            </div>
 
-        {/* Layout desktop: mapa izquierda / panel derecha */}
-        <div className="grid lg:grid-cols-[55%_1fr] gap-6 items-start">
-          {/* Mapa */}
-          <div className="bg-white p-4 shadow-sm aspect-[4/3] md:aspect-auto md:h-[480px] flex items-center">
-            <MasterplanSVG activeId={step.layerIds[0] ?? "overview"} />
+            <div className="relative overflow-hidden rounded-[8px] bg-[#F4F3EA] p-4 shadow-[0_24px_70px_-45px_rgba(0,0,0,0.7)]">
+              <div className="aspect-[4/3] w-full">
+                <MasterplanSVG activeIds={step.layerIds} />
+              </div>
+              <div className="absolute right-5 top-5 rounded-full bg-[#173529]/85 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#DFF9BA]">
+                {step.label}
+              </div>
+            </div>
           </div>
 
-          {/* Panel */}
-          <div className="flex flex-col gap-0">
-            {/* Tabs verticales */}
+          <div>
             <div
-              className="flex lg:flex-col gap-1 flex-wrap mb-4 lg:mb-0"
+              className="mb-7 hidden flex-col gap-2 lg:flex"
               role="tablist"
               aria-label="Secciones del masterplan"
             >
@@ -166,17 +185,17 @@ export default function MasterplanPreview() {
                   aria-selected={activeStep === i}
                   aria-controls={`masterplan-panel-${s.id}`}
                   onClick={() => setActiveStep(i)}
-                  className={`flex items-center gap-2 px-4 py-3 text-sm font-medium text-left transition-all duration-200 border-l-2 ${
+                  className={`flex items-center gap-3 rounded-[8px] border px-4 py-3 text-left text-sm font-semibold transition-all duration-200 ${
                     activeStep === i
-                      ? "border-[#016241] bg-white text-[#016241] font-semibold"
-                      : "border-transparent text-[#5a5a50] hover:text-[#016241] hover:bg-white/50"
+                      ? "border-[#DFF9BA] bg-[#DFF9BA] text-[#173529]"
+                      : "border-white/12 bg-white/5 text-white/72 hover:border-white/28 hover:text-white"
                   }`}
                 >
                   <span
-                    className="w-2 h-2 rounded-full shrink-0"
+                    className="h-2.5 w-2.5 shrink-0 rounded-full transition-colors duration-200"
                     style={{
                       backgroundColor:
-                        activeStep === i ? step.activeColor : "#d8d6c8",
+                        activeStep === i ? "#016241" : "rgba(255,255,255,.32)",
                     }}
                   />
                   {s.label}
@@ -184,32 +203,35 @@ export default function MasterplanPreview() {
               ))}
             </div>
 
-            {/* Contenido del step activo */}
-            <div
+            <motion.div
               id={`masterplan-panel-${step.id}`}
               role="tabpanel"
               aria-labelledby={`masterplan-tab-${step.id}`}
-              className="bg-white p-6 lg:mt-1 flex-1"
               key={step.id}
-              style={{ animation: "fadeInUp 0.25s ease-out" }}
+              initial={false}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.38, ease: "easeOut" }}
+              className="rounded-[8px] border border-white/12 bg-white/8 p-6 backdrop-blur-sm md:p-8"
             >
-              <p className="eyebrow mb-2">{step.eyebrow}</p>
-              <h3 className="text-lg font-bold text-[#284339] mb-3">
+              <p className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-[#DFF9BA]">
+                {step.eyebrow}
+              </p>
+              <h3 className="mb-4 text-balance text-[clamp(1.65rem,3.4vw,2.65rem)] font-bold leading-tight text-white">
                 {step.title}
               </h3>
-              <p className="text-sm text-[#5a5a50] leading-relaxed mb-4">
+              <p className="mb-6 text-base leading-8 text-white/78">
                 {step.body}
               </p>
 
               {step.stats && (
-                <ul className="grid grid-cols-2 gap-2 mb-5">
+                <ul className="mb-6 grid grid-cols-2 gap-px overflow-hidden rounded-[8px] bg-white/14">
                   {step.stats.map((s) => (
                     <li
                       key={s.label}
-                      className="bg-[#F4F3EA] p-3"
+                      className="bg-[#173529] p-4"
                     >
-                      <p className="text-xs text-[#5a5a50]">{s.label}</p>
-                      <p className="text-sm font-bold text-[#284339]">
+                      <p className="text-xs text-white/56">{s.label}</p>
+                      <p className="mt-1 text-lg font-bold text-white">
                         {s.value}
                       </p>
                     </li>
@@ -224,10 +246,16 @@ export default function MasterplanPreview() {
                   href={buildWhatsAppUrl(step.cta.whatsappMsg)}
                   external
                   size="sm"
+                  className="bg-[#DFF9BA] !text-[#173529] hover:bg-white"
                 >
                   {step.cta.label}
                 </Button>
               )}
+            </motion.div>
+
+            <div className="mt-8 hidden items-center gap-3 text-sm text-white/55 lg:flex">
+              <ArrowDown size={16} />
+              Scrolleá para recorrer las capas del proyecto
             </div>
           </div>
         </div>

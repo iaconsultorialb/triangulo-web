@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { Menu, X } from "lucide-react";
+import { Menu, MessageCircle, X } from "lucide-react";
 import { NAV_ITEMS } from "@/data/site";
 import Button from "../ui/Button";
 import { buildWhatsAppUrl, WHATSAPP_MSGS } from "@/lib/whatsapp";
@@ -22,14 +22,14 @@ export default function Header() {
   return (
     <header
       id="main-header"
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 ${
         scrolled
-          ? "bg-[#F4F3EA]/95 backdrop-blur-sm shadow-sm border-b border-[#d8d6c8]"
-          : "bg-transparent"
+          ? "border-[#d8d6c8] bg-[#F4F3EA]/96 shadow-[0_10px_30px_-26px_rgba(40,67,57,0.7)] backdrop-blur-md"
+          : "border-[#d8d6c8]/70 bg-[#F4F3EA]/92 backdrop-blur-md"
       }`}
     >
       <div className="container-max">
-        <div className="flex items-center justify-between h-16 md:h-18">
+        <div className="flex h-[76px] items-center justify-between gap-5">
           {/* Logo / Wordmark */}
           <Link
             id="header-logo"
@@ -37,10 +37,10 @@ export default function Header() {
             className="flex flex-col leading-none group"
             aria-label="El Triángulo de Open Door - Inicio"
           >
-            <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[#016241]">
+            <span className="text-[12px] font-bold tracking-[0.22em] uppercase text-[#016241] transition-colors duration-300">
               El Triángulo
             </span>
-            <span className="text-[10px] tracking-widest uppercase text-[#284339]/60">
+            <span className="mt-1 text-[10px] tracking-[0.22em] uppercase text-[#284339]/62 transition-colors duration-300">
               Open Door
             </span>
           </Link>
@@ -48,7 +48,7 @@ export default function Header() {
           {/* Nav desktop */}
           <nav
             id="main-nav"
-            className="hidden lg:flex items-center gap-6"
+            className="hidden lg:flex items-center gap-2 rounded-[8px] bg-white/34 p-1"
             aria-label="Navegación principal"
           >
             {NAV_ITEMS.filter((i) => i.label !== "Inicio").map((item) => (
@@ -56,10 +56,9 @@ export default function Header() {
                 key={item.href}
                 href={item.href}
                 id={`nav-${item.href.replace("/", "")}`}
-                className="text-sm text-[#284339] font-medium hover:text-[#016241] transition-colors duration-200 relative group"
+                className="relative rounded-[6px] px-4 py-2 text-sm font-semibold text-[#284339] transition-colors duration-200 hover:bg-[#016241]/8 hover:text-[#016241]"
               >
                 {item.label}
-                <span className="absolute -bottom-0.5 left-0 w-0 h-px bg-[#016241] transition-all duration-300 group-hover:w-full" />
               </Link>
             ))}
           </nav>
@@ -72,15 +71,17 @@ export default function Header() {
               href={waUrl}
               external
               size="sm"
+              className="gap-2 whitespace-nowrap"
             >
-              Consultar disponibilidad
+              <MessageCircle size={16} />
+              Consultar
             </Button>
           </div>
 
           {/* Hamburger mobile */}
           <button
             id="mobile-menu-toggle"
-            className="lg:hidden p-2 text-[#284339]"
+            className="lg:hidden rounded-[6px] p-2.5 text-[#284339] transition-colors duration-200 hover:bg-[#284339]/10"
             onClick={() => setOpen(!open)}
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={open}
@@ -94,7 +95,7 @@ export default function Header() {
       {open && (
         <div
           id="mobile-menu"
-          className="lg:hidden bg-[#F4F3EA] border-t border-[#d8d6c8] py-4"
+          className="lg:hidden border-t border-[#d8d6c8] bg-[#F4F3EA] py-4 shadow-[0_18px_40px_-30px_rgba(40,67,57,0.55)]"
         >
           <nav className="container-max flex flex-col gap-1">
             {NAV_ITEMS.map((item) => (
@@ -102,7 +103,7 @@ export default function Header() {
                 key={item.href}
                 href={item.href}
                 id={`mobile-nav-${item.href.replace("/", "") || "inicio"}`}
-                className="py-3 px-2 text-sm font-medium text-[#284339] border-b border-[#d8d6c8]/50 hover:text-[#016241] transition-colors"
+                className="rounded-[6px] px-3 py-3 text-sm font-semibold text-[#284339] transition-colors hover:bg-[#016241]/8 hover:text-[#016241]"
                 onClick={() => setOpen(false)}
               >
                 {item.label}

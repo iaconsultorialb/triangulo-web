@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Home, TrendingUp, Store, MapPin } from "lucide-react";
 import Button from "../ui/Button";
 import { buildWhatsAppUrl, WHATSAPP_MSGS } from "@/lib/whatsapp";
+import { motion } from "framer-motion";
 
 const interests = [
   {
@@ -75,14 +76,21 @@ export default function InterestSelector() {
       aria-label="Selector de interés"
     >
       <div className="container-max">
-        <div className="mb-10">
-          <p className="eyebrow mb-3">¿Qué estás buscando?</p>
-          <h2 className="text-[#284339]">Encontrá tu lugar en el masterplan</h2>
+        <div className="mb-10 grid gap-5 lg:grid-cols-[0.82fr_1fr] lg:items-end">
+          <div>
+            <p className="section-kicker mb-3">¿Qué estás buscando?</p>
+            <h2 className="max-w-2xl text-balance text-[#284339]">
+              Encontrá tu camino dentro del masterplan
+            </h2>
+          </div>
+          <p className="max-w-xl text-base leading-8 text-[#5a5a50] lg:justify-self-end">
+            La web tiene que ordenar la consulta. Elegí una intención y el sitio
+            te lleva al producto, argumento y canal correcto.
+          </p>
         </div>
 
-        {/* Tabs */}
         <div
-          className="flex flex-wrap gap-2 mb-8"
+          className="mb-6 grid grid-cols-2 gap-2 md:grid-cols-4"
           role="tablist"
           aria-label="Tipos de interés"
         >
@@ -96,41 +104,44 @@ export default function InterestSelector() {
                 aria-selected={active === i}
                 aria-controls={`interest-panel-${interest.id}`}
                 onClick={() => setActive(i)}
-                className={`flex items-center gap-2 px-5 py-3 text-sm font-semibold transition-all duration-200 border ${
+                className={`flex min-h-[86px] flex-col items-start justify-between rounded-[8px] border px-4 py-4 text-left text-sm font-semibold transition-all duration-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#016241] ${
                   active === i
-                    ? "bg-[#016241] text-white border-[#016241]"
-                    : "bg-white text-[#284339] border-[#d8d6c8] hover:border-[#016241] hover:text-[#016241]"
+                    ? "border-[#016241] bg-[#016241] text-white shadow-[0_18px_34px_-28px_rgba(1,98,65,0.8)]"
+                    : "border-[#d8d6c8] bg-white/64 text-[#284339] hover:border-[#016241]/45 hover:bg-white"
                 }`}
               >
-                <Icon size={16} />
+                <Icon size={18} />
                 {interest.label}
               </button>
             );
           })}
         </div>
 
-        {/* Panel activo */}
-        <div
+        <motion.div
           id={`interest-panel-${current.id}`}
           role="tabpanel"
           aria-labelledby={`interest-tab-${current.id}`}
-          className="grid md:grid-cols-2 gap-8 items-center bg-white p-8 md:p-10"
           key={current.id}
-          style={{ animation: "fadeInUp 0.3s ease-out" }}
+          initial={false}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35, ease: "easeOut" }}
+          className="grid overflow-hidden rounded-[8px] border border-[#d8d6c8] bg-white md:grid-cols-[0.9fr_1fr]"
         >
-          <div>
-            <div className="flex items-center gap-3 mb-4">
+          <div className="border-b border-[#d8d6c8] p-6 md:border-b-0 md:border-r md:p-8">
+            <div className="mb-5 flex items-center gap-3">
               {(() => {
                 const Icon = current.icon;
                 return (
-                  <div className="w-10 h-10 bg-[#DFF9BA] flex items-center justify-center">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-[8px] bg-[#DFF9BA]">
                     <Icon size={20} className="text-[#016241]" />
                   </div>
                 );
               })()}
-              <h3 className="text-xl font-bold text-[#284339]">{current.label}</h3>
+              <h3 className="text-2xl font-bold text-[#284339]">{current.label}</h3>
             </div>
-            <p className="text-[#5a5a50] mb-6 leading-relaxed">{current.description}</p>
+            <p className="mb-7 text-base leading-8 text-[#5a5a50]">
+              {current.description}
+            </p>
             <Button
               id={`interest-cta-${current.id}`}
               variant="primary"
@@ -142,15 +153,15 @@ export default function InterestSelector() {
             </Button>
           </div>
 
-          <ul className="flex flex-col gap-3">
+          <ul className="grid gap-px bg-[#d8d6c8] md:grid-cols-2">
             {current.bullets.map((bullet, i) => (
-              <li key={i} className="flex items-start gap-3">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#016241] mt-2 shrink-0" />
-                <span className="text-sm text-[#284339]">{bullet}</span>
+              <li key={i} className="flex items-start gap-3 bg-white px-6 py-5">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-[#016241]" />
+                <span className="text-sm leading-7 text-[#284339]">{bullet}</span>
               </li>
             ))}
           </ul>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

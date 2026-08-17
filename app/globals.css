@@ -10,6 +10,7 @@
   --color-texto: #1a1a18;
   --color-texto-suave: #5a5a50;
   --color-borde: #d8d6c8;
+  --header-h: 5.25rem;
 }
 
 @theme inline {
@@ -33,6 +34,7 @@
 html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
+  text-rendering: geometricPrecision;
 }
 
 body {
@@ -40,14 +42,14 @@ body {
   color: var(--color-texto);
   font-family: 'Inter', system-ui, sans-serif;
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 /* ─── Tipografía base ─────────────────────────────────────────── */
 h1, h2, h3, h4, h5 {
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
   line-height: 1.15;
-  color: var(--color-verde-oscuro);
 }
 
 h1 { font-size: clamp(2.25rem, 5vw, 4rem); }
@@ -55,9 +57,18 @@ h2 { font-size: clamp(1.75rem, 3.5vw, 2.75rem); }
 h3 { font-size: clamp(1.25rem, 2.5vw, 1.75rem); }
 
 p {
-  color: var(--color-texto-suave);
   font-size: 1rem;
   line-height: 1.7;
+}
+
+a {
+  text-decoration: none;
+}
+
+button,
+a,
+input {
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* ─── Scrollbar ───────────────────────────────────────────────── */
@@ -67,12 +78,12 @@ p {
 
 /* ─── Utilidades personalizadas ──────────────────────────────── */
 .section-padding {
-  padding-block: clamp(4rem, 8vw, 7rem);
+  padding-block: clamp(5rem, 9vw, 8rem);
   padding-inline: clamp(1.25rem, 5vw, 2rem);
 }
 
 .container-max {
-  max-width: 1280px;
+  max-width: 1180px;
   margin-inline: auto;
   width: 100%;
   padding-inline: clamp(1rem, 4vw, 2rem);
@@ -86,6 +97,26 @@ p {
   color: var(--color-verde-principal);
 }
 
+.text-balance {
+  text-wrap: balance;
+}
+
+.soft-divider {
+  border-color: color-mix(in srgb, var(--color-borde) 72%, transparent);
+}
+
+.section-kicker {
+  color: var(--color-verde-principal);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.reveal-up {
+  animation: fadeInUp 0.7s ease both;
+}
+
 /* ─── Animaciones ────────────────────────────────────────────── */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(24px); }
@@ -93,6 +124,28 @@ p {
 }
 
 @keyframes pulseWhatsapp {
-  0%, 100% { transform: scale(1); }
-  50%       { transform: scale(1.08); }
+  0%, 100% { box-shadow: 0 14px 30px -12px rgb(37 211 102 / 0.55); }
+  50%      { box-shadow: 0 22px 45px -14px rgb(37 211 102 / 0.65); }
+}
+
+/* ─── Focus global accesible ─────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-verde-principal);
+  outline-offset: 2px;
+}
+
+/* ─── Transición de scroll suave para anclas ─────────────────── */
+[id] {
+  scroll-margin-top: 6.5rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.001ms !important;
+  }
 }

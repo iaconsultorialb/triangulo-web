@@ -34,12 +34,11 @@ export default function ProductCard({ product, featured = false }: ProductCardPr
   return (
     <article
       id={`product-card-${product.id}`}
-      className={`group flex flex-col bg-white overflow-hidden transition-shadow duration-300 hover:shadow-xl ${
+      className={`group flex flex-col overflow-hidden rounded-[8px] border border-[#d8d6c8] bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_24px_52px_-34px_rgba(40,67,57,0.65)] ${
         featured ? "lg:col-span-2" : ""
       }`}
     >
-      {/* Imagen */}
-      <div className="relative overflow-hidden aspect-[4/3]">
+      <div className="relative aspect-[16/10] overflow-hidden">
         <Image
           src={product.imagen}
           alt={product.nombre}
@@ -47,10 +46,9 @@ export default function ProductCard({ product, featured = false }: ProductCardPr
           className="object-cover transition-transform duration-700 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
         />
-        {/* Badge de estado */}
         <div className="absolute top-4 left-4">
           <span
-            className={`inline-block text-xs font-semibold px-3 py-1 tracking-wide ${badge.class}`}
+            className={`inline-block rounded-[6px] px-3 py-1 text-xs font-bold ${badge.class}`}
           >
             {badge.label}
           </span>
@@ -62,19 +60,17 @@ export default function ProductCard({ product, featured = false }: ProductCardPr
         />
       </div>
 
-      {/* Contenido */}
-      <div className="flex flex-col flex-1 p-6 gap-4">
+      <div className="flex flex-1 flex-col gap-5 p-6">
         <div>
-          <p className="eyebrow mb-2">{product.tagline}</p>
-          <h3 className="text-xl font-bold text-[#284339]">{product.nombre}</h3>
-          <p className="mt-2 text-sm text-[#5a5a50] leading-relaxed">
+          <p className="section-kicker mb-2">{product.tagline}</p>
+          <h3 className="text-3xl font-bold text-[#284339]">{product.nombre}</h3>
+          <p className="mt-3 text-sm leading-7 text-[#5a5a50]">
             {product.descripcion}
           </p>
         </div>
 
-        {/* Stats */}
         {product.stats && product.stats.length > 0 && (
-          <ul className="grid grid-cols-2 gap-2 border-t border-[#d8d6c8] pt-4">
+          <ul className="grid grid-cols-2 gap-3 border-t border-[#d8d6c8] pt-5">
             {product.stats.map((stat) => (
               <li key={stat.label}>
                 <p className="text-xs text-[#5a5a50]">{stat.label}</p>
@@ -84,29 +80,26 @@ export default function ProductCard({ product, featured = false }: ProductCardPr
           </ul>
         )}
 
-        {/* CTAs */}
-        <div className="flex flex-col sm:flex-row gap-2 mt-auto">
+        <div className="mt-auto flex flex-col gap-2 sm:flex-row">
           <Button
             variant="primary"
-            href={waUrl}
-            external
+            href={`/${product.slug}`}
             id={`cta-${product.id}-whatsapp`}
-            className="flex-1 text-xs py-3"
+            className="flex-1"
             size="sm"
           >
-            {product.ctaPrimario.label}
+            Ver detalle
           </Button>
-          {product.ctaSecundario && (
-            <Button
-              variant="secondary"
-              href={product.ctaSecundario.href}
-              id={`cta-${product.id}-secundario`}
-              className="flex-1 text-xs py-3"
-              size="sm"
-            >
-              {product.ctaSecundario.label}
-            </Button>
-          )}
+          <Button
+            variant="secondary"
+            href={waUrl}
+            external
+            id={`cta-${product.id}-secundario`}
+            className="flex-1 bg-white"
+            size="sm"
+          >
+            Consultar
+          </Button>
         </div>
       </div>
     </article>

@@ -13,11 +13,11 @@ export default function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Contactar por WhatsApp"
-      className="fixed bottom-6 right-6 z-50 flex items-center gap-2 bg-[#25D366] text-white px-4 py-3 shadow-lg hover:bg-[#1dba57] transition-all duration-200 hover:-translate-y-0.5 group"
+      className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-[#25D366] px-3.5 py-3 text-white shadow-xl transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#1dba57] hover:shadow-2xl md:px-4 group"
       style={{ animation: "pulseWhatsapp 3s ease-in-out infinite" }}
     >
-      <MessageCircle size={20} className="shrink-0" />
-      <span className="text-sm font-semibold hidden sm:inline">WhatsApp</span>
+      <MessageCircle size={20} className="shrink-0 group-hover:scale-110 transition-transform duration-200" />
+      <span className="hidden text-sm font-semibold md:inline">WhatsApp</span>
     </a>
   );
 }
